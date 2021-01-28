@@ -11,6 +11,13 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
-    "paths": {}
+    "paths": {
+      "@lib/neo4j": [
+        "libs/neo4j/src"
+      ],
+      "@lib/neo4j/*": [
+        "libs/neo4j/src/*"
+      ]
+    }
   }
 }

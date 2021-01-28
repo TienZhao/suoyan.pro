@@ -6,7 +6,9 @@ export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
   @Get()
-  getHello(): string {
-    return this.adminService.getHello();
+  async getHello(): Promise<string> {
+    const greeting = await this.adminService.getHello();
+    return greeting
   }
 }
+

@@ -43,6 +43,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/client/tsconfig.app.json"
       }
+    },
+    "neo4j": {
+      "type": "library",
+      "root": "libs/neo4j",
+      "entryFile": "index",
+      "sourceRoot": "libs/neo4j/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/neo4j/tsconfig.lib.json"
+      }
     }
   }
 }
