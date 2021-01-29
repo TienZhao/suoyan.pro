@@ -31,7 +31,7 @@
                         type="textarea"
                         :autosize="{ minRows: 10, maxRows: 50}"
                         placeholder="请输入内容"
-                        v-model="textarea"
+                        v-model="textareaLeft"
                         maxlength="500"
                         show-word-limit
                     >
@@ -44,7 +44,7 @@
                         type="textarea"
                         :autosize="{ minRows: 10, maxRows: 50}"
                         placeholder="请输入内容"
-                        v-model="textarea"
+                        v-model="textareaRight"
                         maxlength="500"
                         show-word-limit
                     >
@@ -55,12 +55,12 @@
             <el-row :gutter="20">
                 <!-- Buttons -->
                 <el-col :span="12" :offset="0" style="display:block;">
-                    <el-button type="primary">语料对齐</el-button>
-                    <el-button type="primary" plain>高级对齐</el-button>
+                    <el-button type="primary" @click="onAlign">语料对齐</el-button>
+                    <el-button type="primary" plain  @click="onAdvancedAlign">高级对齐</el-button>
                 </el-col>
                 <el-col :span="12" :offset="0"></el-col>
-            </el-row>         
-            
+            </el-row>  
+           
         </el-main>
 
         <el-footer height="40px">
@@ -86,6 +86,25 @@
                 { title: '引用', path: '/referencer' },
             ]
         }
+        textareaLeft = ''
+        textareaRight = ''
+
+        // Methods
+        onAlign(){
+            // alert(this.textareaLeft);
+            console.log('align btn clicked');
+            console.log(this.textareaLeft);
+            console.log(this.textareaRight);
+        }
+
+        onAdvancedAlign(){
+            console.log('advanced align btn clicked');
+            console.log(this.textareaLeft);
+            console.log(this.textareaRight);
+        }
+
+
+
     }
   
 </script>
