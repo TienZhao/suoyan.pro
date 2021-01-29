@@ -1,15 +1,28 @@
 <template>
   <div id="app">
-    <div id="nav">
+    <!-- <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    </div> -->
+    <router-view></router-view>
   </div>
 </template>
 
+<script tang = 'ts'>
+  import { Component, Vue } from 'vue-property-decorator';
+  // import HelloWorld from './components/HelloWorld.vue';
+
+  @Component({
+    // components: {
+    //   Helloworld,
+    // }
+  })
+  export default class App extends Vue{}
+
+</script>
+
 <style>
-#app {
+/* #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -28,5 +41,5 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
-}
+} */
 </style>
