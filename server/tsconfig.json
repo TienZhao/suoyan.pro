@@ -17,6 +17,12 @@
       ],
       "@lib/neo4j/*": [
         "libs/neo4j/src/*"
+      ],
+      "lib/tencentcloud": [
+        "libs/tencentcloud/src"
+      ],
+      "lib/tencentcloud/*": [
+        "libs/tencentcloud/src/*"
       ]
     }
   }

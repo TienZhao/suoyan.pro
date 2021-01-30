@@ -28,6 +28,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.3",
+    "tencentcloud-sdk-nodejs": "^4.0.60",
     "vue": "^2.6.12"
   },
   "devDependencies": {
@@ -74,7 +75,9 @@
     ],
     "moduleNameMapper": {
       "@lib/neo4j/(.*)": "<rootDir>/libs/neo4j/src/$1",
-      "@lib/neo4j": "<rootDir>/libs/neo4j/src"
+      "@lib/neo4j": "<rootDir>/libs/neo4j/src",
+      "lib/tencentcloud/(.*)": "<rootDir>/libs/tencentcloud/src/$1",
+      "lib/tencentcloud": "<rootDir>/libs/tencentcloud/src"
     }
   }
 }

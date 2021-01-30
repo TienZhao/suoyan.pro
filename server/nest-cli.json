@@ -52,6 +52,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/neo4j/tsconfig.lib.json"
       }
+    },
+    "tencentcloud": {
+      "type": "library",
+      "root": "libs/tencentcloud",
+      "entryFile": "index",
+      "sourceRoot": "libs/tencentcloud/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/tencentcloud/tsconfig.lib.json"
+      }
     }
   }
 }
