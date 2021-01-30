@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post } from '@nestjs/common';
 import { AdminService } from './admin.service';
 
 @Controller()
@@ -9,6 +9,12 @@ export class AdminController {
   async getHello(): Promise<string> {
     const greeting = await this.adminService.getHello();
     return greeting
+  }
+
+  @Post('post')
+  async postHello(): Promise<string> {
+    const post = await this.adminService.postHello();
+    return post
   }
 }
 

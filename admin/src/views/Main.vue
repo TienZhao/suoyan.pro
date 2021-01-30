@@ -91,9 +91,7 @@
  
  <script tang = 'ts'>
     import { Component, Vue } from 'vue-property-decorator';  
-    @Component({
-
-    })
+    @Component({})
     export default class Main extends Vue{
         // Navbar
         headerNavMenu = {
@@ -107,17 +105,23 @@
         textareaRight = ''
 
         // Methods
-        onAlign(){
+        async onAlign(){
             // alert(this.textareaLeft);
             console.log('align btn clicked');
             console.log(this.textareaLeft);
             console.log(this.textareaRight);
+            
+            const res = await this.$http.get()
+            console.log(res)
         }
 
-        onAdvancedAlign(){
+        async onAdvancedAlign(){
             console.log('advanced align btn clicked');
             console.log(this.textareaLeft);
             console.log(this.textareaRight);
+
+            const res = await this.$http.post('/post')
+            console.log(res)
         }
 
 

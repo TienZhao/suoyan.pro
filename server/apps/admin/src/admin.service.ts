@@ -18,7 +18,18 @@ export class AdminService {
     const result = this.neo4jService.read('MATCH (n) RETURN count(n) AS COUNT', {});
     const count = (await result).records[0].get('COUNT')
 
-    // console.log(this.neo4jService)
+    // console.log(`Hello Neo4j User! There are ${count} nodes in the database`)
     return `Hello Neo4j User! There are ${count} nodes in the database`;
+  }
+
+  async postHello(): Promise<string> {
+    const timestamp = Date.parse(new Date().toString())
+    const cypherSentence = "CREATE (Hello:Movie {timestamp:'" + timestamp + "', user:'admin'})"
+    const result = this.neo4jService.write(cypherSentence, {});
+    
+    const res = await result
+
+    // console.log(`Hello Neo4j User! There are ${count} nodes in the database`)
+    return `${res}`;
   }
 }
