@@ -1,13 +1,12 @@
 <template>
     <el-container direction="vertical">
-        <el-header 
-            height="40px"
-            style="font-size: 28px">
+        <el-header>
             <!-- Header content -->
             <el-row :gutter="20">
                 <!-- Title -->
                 <el-col :span="16" :offset="0">
-                    所言.pro
+                    <el-image style="width: 114px; height: 50px" :src="require('../assets/yanyes_logo_100p.png')" fit="contain" ></el-image>
+                    <!-- 所言.pro -->
                 </el-col>
                 <el-col :span="8" :offset="0" >
                 <!-- Header Navbar -->
@@ -15,7 +14,7 @@
                         mode="horizontal" 
                         default-active="$route.path" 
                         router
-                        style="float: right;">
+                        style="float: right; height: 50px">
                         <el-menu-item v-for="(item, index) in headerNavMenu.items"
                             :index="item.path"
                             :key="`headerNavMenuItem-${index}`">
