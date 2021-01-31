@@ -18,9 +18,9 @@ export class AdminController {
     return post
   }
 
-  @Post('lexical_analyze')
-  async lexicalAnalyze(@Body() body): Promise<Object> {
-    const postRes = await this.adminService.lexicalAnalyze(body);
+  @Post('lexical_analysis')
+  lexicalAnalysis(@Body() body) {
+    const postRes = this.adminService.lexicalAnalysis(body);
     return postRes
   }
 }

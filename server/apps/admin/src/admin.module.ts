@@ -20,14 +20,16 @@ import { TencentcloudModule } from 'libs/tencentcloud/src/tencentcloud.module';
       host: 'localhost',
       port: 7687,
       username: 'neo4j',
-      password: 'FengTuRenQ!ng',
+      password: 'FengTu',
     }),
     TencentcloudModule.forRoot({
       credential: {
-        secretId: "secretId", //?
-        secretKey: "secretKey", //?
+        secretId: "", //
+        secretKey: "", //
       },
-      region: "ap-shanghai",
+      
+      region: "ap-guangzhou", // NLP只支持ap-guangzhou，否则报错The action not support this region.
+      
       profile: {
         signMethod: "HmacSHA256", // 签名方法
         httpProfile: {

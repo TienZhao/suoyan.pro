@@ -34,10 +34,10 @@ export class AdminService {
     return `${res}`;
   }
 
-  async lexicalAnalyze(body): Promise<object> {
-    console.log(body)
-    const text = body.text
-    const result = await this.tencentcloudService.lexicalAnalyze(text);
+  async lexicalAnalysis(body) {
+    // console.log(body);
+    const text = body.text;
+    const result = await this.tencentcloudService.lexicalAnalysis(text);
     return result
   }
 }
