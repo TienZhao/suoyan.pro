@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Neo4jService } from 'libs/neo4j/src/neo4j.service';
 import { SbdService } from 'libs/sbd/src/sbd.service';
 import { TencentcloudService } from 'libs/tencentcloud/src/tencentcloud.service'
+import { LexicalAnalysisRequest, TextSimilarityRequest } from 'tencentcloud-sdk-nodejs/tencentcloud/services/nlp/v20190408/nlp_models'
 
 // @Injectable()
 // export class AdminService {
@@ -42,6 +43,12 @@ export class AdminService {
     // console.log(body);
     const text = body.text;
     const result = await this.tencentcloudService.lexicalAnalysis(text);
+    return result
+  }
+
+  async textSimilarity(req: TextSimilarityRequest) {
+    // console.log(req);
+    const result = await this.tencentcloudService.textSimilarity(req);
     return result
   }
 

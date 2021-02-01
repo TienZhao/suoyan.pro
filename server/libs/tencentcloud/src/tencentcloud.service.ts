@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@nestjs/common';
 import { TENCENTCLOUD_CONFIG, TENCENTCLOUD_CLIENT } from './tencentcloud-contants'
 import { ClientConfig } from "tencentcloud-sdk-nodejs/tencentcloud/common/interface";
 import { Client } from "tencentcloud-sdk-nodejs/tencentcloud/services/nlp/v20190408/nlp_client";
-import { LexicalAnalysisRequest, LexicalAnalysisResponse } from 'tencentcloud-sdk-nodejs/tencentcloud/services/nlp/v20190408/nlp_models'
+import { LexicalAnalysisRequest, LexicalAnalysisResponse, TextSimilarityRequest } from 'tencentcloud-sdk-nodejs/tencentcloud/services/nlp/v20190408/nlp_models'
 import * as tencentcloud from "tencentcloud-sdk-nodejs";
 
 
@@ -32,8 +32,13 @@ export class TencentcloudService {
         }
 
         // 通过client对象调用想要访问的接口，需要传入请求对象以及响应回调函数
-        const res =  await this.client.LexicalAnalysis(req)
+        const res = await this.client.LexicalAnalysis(req)
         // console.log(res)
+        return res
+    }
+
+    async textSimilarity(req: TextSimilarityRequest ){
+        const res = await this.client.TextSimilarity(req)
         return res
     }
 

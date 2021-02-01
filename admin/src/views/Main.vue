@@ -90,6 +90,7 @@
  
  <script tang = 'ts'>
     import { Component, Vue } from 'vue-property-decorator';  
+ 
     @Component({})
     export default class Main extends Vue{
         // Navbar
@@ -119,18 +120,27 @@
             console.log(this.textareaLeft);
             console.log(this.textareaRight);
 
+            // Lexical Analysis Test
             // const res = await this.$http.post('/post')
             // const res = await this.$http.post('/lexical_analysis',{
             //     text: this.textareaLeft
             // })
-            const res = await this.$http.post('/sbd',
-            [{
-                text: this.textareaLeft,
-                lang: 'zh'
-            },{
-                text: this.textareaRight,
-                lang: 'en'
-            }])
+            
+            // Sentence Boundary Detection Test
+            // const res = await this.$http.post('/sbd',
+            // [{
+            //     text: this.textareaLeft,
+            //     lang: 'zh'
+            // },{
+            //     text: this.textareaRight,
+            //     lang: 'en'
+            // }])
+
+            // Translation Similarity Test
+            const res = await this.$http.post('/text_similarity',{
+                src: this.textareaRight,
+                tgt: this.textareaLeft,
+            })
             console.log(res)
         }
 
