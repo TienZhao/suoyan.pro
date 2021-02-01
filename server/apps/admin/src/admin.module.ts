@@ -26,8 +26,8 @@ import { SbdModule } from 'libs/sbd/src/sbd.module';
     }),
     TencentcloudModule.forRoot({
       credential: {
-        secretId: "AKIDZv2vXwLH4kDVYS9RUGo58wSkMiokDGvM", //
-        secretKey: "K2UfdL6evxlslND1cxjJdiYI1UgiU8YM", //
+        secretId: "", //
+        secretKey: "", //
       },
       region: "ap-guangzhou", // NLP只支持ap-guangzhou，否则报错The action not support this region.
 

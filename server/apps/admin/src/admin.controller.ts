@@ -2,6 +2,7 @@ import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ObjectUnsubscribedError } from 'rxjs';
 import { AdminService } from './admin.service';
 import { LexicalAnalysisRequest, TextSimilarityRequest } from 'tencentcloud-sdk-nodejs/tencentcloud/services/nlp/v20190408/nlp_models'
+import { TextTranslateRequest } from 'tencentcloud-sdk-nodejs/tencentcloud/services/tmt/v20180321/tmt_models';
 
 @Controller()
 export class AdminController {
@@ -53,6 +54,22 @@ export class AdminController {
     const postRes = this.adminService.textSimilarity(req);
     // console.log(postRes);
     return postRes
+  }
+
+  @Post('text-translate')
+  text_translate(@Body() body) {
+
+    const req: TextTranslateRequest = {
+      SourceText: body.src,
+      Source: 'auto',
+      /** 目标语言，各源语言的目标语言支持列表：https://cloud.tencent.com/document/product/551/15619 *        */
+      Target: 'zh',
+      ProjectId: 0
+    }
+    console.log(req)
+
+    const postRes = this.adminService.textTranslaste(req)
+    return postRes  
   }
 }
 

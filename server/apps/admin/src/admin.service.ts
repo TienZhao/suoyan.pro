@@ -3,6 +3,7 @@ import { Neo4jService } from 'libs/neo4j/src/neo4j.service';
 import { SbdService } from 'libs/sbd/src/sbd.service';
 import { TencentcloudService } from 'libs/tencentcloud/src/tencentcloud.service'
 import { LexicalAnalysisRequest, TextSimilarityRequest } from 'tencentcloud-sdk-nodejs/tencentcloud/services/nlp/v20190408/nlp_models'
+import { TextTranslateRequest } from 'tencentcloud-sdk-nodejs/tencentcloud/services/tmt/v20180321/tmt_models';
 
 // @Injectable()
 // export class AdminService {
@@ -49,6 +50,13 @@ export class AdminService {
   async textSimilarity(req: TextSimilarityRequest) {
     // console.log(req);
     const result = await this.tencentcloudService.textSimilarity(req);
+    return result
+  }
+
+  async textTranslaste(req: TextTranslateRequest) {
+    // console.log(req);
+    // console.log(this.tencentcloudService.getTmtClient())
+    const result = await this.tencentcloudService.textTranslate(req);
     return result
   }
 

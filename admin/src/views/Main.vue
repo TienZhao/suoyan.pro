@@ -136,10 +136,16 @@
             //     lang: 'en'
             // }])
 
-            // Translation Similarity Test
-            const res = await this.$http.post('/text_similarity',{
+            // Sentence Similarity Test
+            // const res = await this.$http.post('/text_similarity',{
+            //     src: this.textareaRight,
+            //     tgt: this.textareaLeft,
+            // })
+            // console.log(res)
+
+            // Translation Test
+            const res = await this.$http.post('/text-translate',{
                 src: this.textareaRight,
-                tgt: this.textareaLeft,
             })
             console.log(res)
         }
