@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Neo4jService } from 'libs/neo4j/src/neo4j.service';
+import { SbdService } from 'libs/sbd/src/sbd.service';
 import { TencentcloudService } from 'libs/tencentcloud/src/tencentcloud.service'
 
 // @Injectable()
@@ -13,7 +14,10 @@ import { TencentcloudService } from 'libs/tencentcloud/src/tencentcloud.service'
 @Injectable()
 export class AdminService {
 
-  constructor(private readonly neo4jService: Neo4jService, private readonly tencentcloudService: TencentcloudService) {}
+  constructor(private readonly neo4jService: Neo4jService,
+    private readonly tencentcloudService: TencentcloudService,
+    private readonly sbdService: SbdService
+    ) {}
 
   async getHello(): Promise<string> {
     const result = this.neo4jService.read('MATCH (n) RETURN count(n) AS COUNT', {});
@@ -38,6 +42,13 @@ export class AdminService {
     // console.log(body);
     const text = body.text;
     const result = await this.tencentcloudService.lexicalAnalysis(text);
+    return result
+  }
+
+  // sbd stands for sentence boundary detection
+  sbd(body){
+    const result = this.sbdService.splitSentence(body);
+    // console.log(result);
     return result
   }
 }

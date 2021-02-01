@@ -61,6 +61,15 @@
       "compilerOptions": {
         "tsConfigPath": "libs/tencentcloud/tsconfig.lib.json"
       }
+    },
+    "sbd": {
+      "type": "library",
+      "root": "libs/sbd",
+      "entryFile": "index",
+      "sourceRoot": "libs/sbd/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/sbd/tsconfig.lib.json"
+      }
     }
   }
 }

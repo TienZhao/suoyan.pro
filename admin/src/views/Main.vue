@@ -120,9 +120,17 @@
             console.log(this.textareaRight);
 
             // const res = await this.$http.post('/post')
-            const res = await this.$http.post('/lexical_analysis',{
-                text: this.textareaLeft
-            })
+            // const res = await this.$http.post('/lexical_analysis',{
+            //     text: this.textareaLeft
+            // })
+            const res = await this.$http.post('/sbd',
+            [{
+                text: this.textareaLeft,
+                lang: 'zh'
+            },{
+                text: this.textareaRight,
+                lang: 'en'
+            }])
             console.log(res)
         }
 

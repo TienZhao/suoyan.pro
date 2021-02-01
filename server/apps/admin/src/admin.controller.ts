@@ -23,5 +23,13 @@ export class AdminController {
     const postRes = this.adminService.lexicalAnalysis(body);
     return postRes
   }
+
+  @Post('sbd')
+  sbd(@Body() body) {
+    console.log(body);
+    const postRes = this.adminService.sbd(body);
+    console.log(postRes);
+    return JSON.parse(JSON.stringify(postRes))
+  }
 }
 

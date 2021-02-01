@@ -3,6 +3,7 @@ import { AdminController } from './admin.controller';
 import { AdminService } from './admin.service';
 import { Neo4jModule } from 'libs/neo4j/src/neo4j.module';
 import { TencentcloudModule } from 'libs/tencentcloud/src/tencentcloud.module';
+import { SbdModule } from 'libs/sbd/src/sbd.module';
 
 
 // @Module({
@@ -15,6 +16,7 @@ import { TencentcloudModule } from 'libs/tencentcloud/src/tencentcloud.module';
 
 @Module({
   imports: [
+    SbdModule,
     Neo4jModule.forRoot({
       scheme: 'bolt',
       host: 'localhost',
@@ -27,9 +29,8 @@ import { TencentcloudModule } from 'libs/tencentcloud/src/tencentcloud.module';
         secretId: "", //
         secretKey: "", //
       },
-      
       region: "ap-guangzhou", // NLP只支持ap-guangzhou，否则报错The action not support this region.
-      
+
       profile: {
         signMethod: "HmacSHA256", // 签名方法
         httpProfile: {

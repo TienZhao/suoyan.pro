@@ -28,6 +28,7 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.3",
+    "sbd": "^1.0.18",
     "tencentcloud-sdk-nodejs": "^4.0.60",
     "vue": "^2.6.12"
   },
@@ -77,7 +78,9 @@
       "@lib/neo4j/(.*)": "<rootDir>/libs/neo4j/src/$1",
       "@lib/neo4j": "<rootDir>/libs/neo4j/src",
       "lib/tencentcloud/(.*)": "<rootDir>/libs/tencentcloud/src/$1",
-      "lib/tencentcloud": "<rootDir>/libs/tencentcloud/src"
+      "lib/tencentcloud": "<rootDir>/libs/tencentcloud/src",
+      "lib/sbd/(.*)": "<rootDir>/libs/sbd/src/$1",
+      "lib/sbd": "<rootDir>/libs/sbd/src"
     }
   }
 }

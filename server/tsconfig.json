@@ -23,6 +23,12 @@
       ],
       "lib/tencentcloud/*": [
         "libs/tencentcloud/src/*"
+      ],
+      "lib/sbd": [
+        "libs/sbd/src"
+      ],
+      "lib/sbd/*": [
+        "libs/sbd/src/*"
       ]
     }
   }
