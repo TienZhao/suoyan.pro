@@ -1,12 +1,20 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ObjectUnsubscribedError } from 'rxjs';
 import { AdminService } from './admin.service';
+// import { AlignService } from './align/align.service';
 import { LexicalAnalysisRequest, TextSimilarityRequest } from 'tencentcloud-sdk-nodejs/tencentcloud/services/nlp/v20190408/nlp_models'
 import { TextTranslateRequest } from 'tencentcloud-sdk-nodejs/tencentcloud/services/tmt/v20180321/tmt_models';
+import { ApiTags } from '@nestjs/swagger'
+import { AlignRequest } from './align/align.model';
+import { AlignService } from './align/align.service'
 
 @Controller()
+@ApiTags('admin')
 export class AdminController {
-  constructor(private readonly adminService: AdminService) {}
+  constructor(
+      private readonly adminService: AdminService,
+      private readonly alignService: AlignService,
+    ) {}
 
   @Get()
   async getHello(): Promise<string> {
@@ -22,7 +30,10 @@ export class AdminController {
 
   @Post('lexical_analysis')
   lexicalAnalysis(@Body() body) {
-    const postRes = this.adminService.lexicalAnalysis(body);
+    const req: LexicalAnalysisRequest = {
+      Text: body.text
+    }
+    const postRes = this.adminService.lexicalAnalysis(req);
     return postRes
   }
 
@@ -69,6 +80,18 @@ export class AdminController {
     console.log(req)
 
     const postRes = this.adminService.textTranslaste(req)
+    return postRes  
+  }
+
+  @Post('align')
+  align(@Body() req) {
+    const postRes = this.alignService.alignArticles(req)
+    return postRes  
+  }
+
+  @Post('align_test')
+  align_test(@Body() req) {
+    const postRes = this.alignService.alignArticlesTest()
     return postRes  
   }
 }

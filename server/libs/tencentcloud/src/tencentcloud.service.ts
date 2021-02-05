@@ -29,15 +29,7 @@ export class TencentcloudService {
     }
 
     
-    async lexicalAnalysis(text: string){
-        const req: LexicalAnalysisRequest = {
-            Text: text,
-            /*待分析的文本（仅支持UTF-8格式，不超过500字），需要做检验 */
-            // DictId: '1',
-            /* DictId 词法分析模式（可选，默认取2值）：1、高精度（混合粒度分词能力）；2、高性能（单粒度分词能力）；              */
-        }
-
-        // 通过client对象调用想要访问的接口，需要传入请求对象以及响应回调函数
+    async lexicalAnalysis(req: LexicalAnalysisRequest){
         const res = await this.nlpClient.LexicalAnalysis(req)
         // console.log(res)
         return res

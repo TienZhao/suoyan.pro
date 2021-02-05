@@ -35,7 +35,7 @@
                         :autosize="{ minRows: 10, maxRows: 50}"
                         placeholder="请输入中文语料"
                         v-model="textareaLeft"
-                        maxlength="500"
+                        maxlength="2000"
                         show-word-limit
                     >
                     </el-input>
@@ -48,7 +48,7 @@
                         :autosize="{ minRows: 10, maxRows: 50}"
                         placeholder="请输入西班牙语语料"
                         v-model="textareaRight"
-                        maxlength="500"
+                        maxlength="2000"
                         show-word-limit
                     >
                     </el-input>
@@ -59,7 +59,7 @@
                 <!-- Buttons -->
                 <el-col :span="12" :offset="0" style="display:block;">
                     <el-button type="primary" @click="onAlign">一键对齐</el-button>
-                    <el-button type="primary" plain  @click="onAdvancedAlign">高级对齐</el-button>
+                    <el-button type="primary" plain  @click="onAdvancedAlign">模拟对齐</el-button>
                 </el-col>
                 <el-col :span="12" :offset="0"></el-col>
             </el-row>  
@@ -111,14 +111,33 @@
             console.log(this.textareaLeft);
             console.log(this.textareaRight);
             
-            const res = await this.$http.get()
+            // const res = await this.$http.get()
+            // console.log(res)
+
+            // Alignment Test
+            const req = new( Object )
+            req.articles = new( Array)
+            req.articles.push({
+                    text: this.textareaLeft,
+                    lang: 'zh'
+                })
+            req.articles.push({
+                text: this.textareaRight,
+                    lang: 'es'
+                })
+            console.log(req)
+            const res = await this.$http.post('/align',req)
             console.log(res)
         }
 
+
         async onAdvancedAlign(){
-            console.log('advanced align btn clicked');
-            console.log(this.textareaLeft);
-            console.log(this.textareaRight);
+            console.log('Test align test btn clicked');
+            const res = await this.$http.post('/align_test',{})
+            console.log(res)
+
+            // console.log(this.textareaLeft);
+            // console.log(this.textareaRight);
 
             // Lexical Analysis Test
             // const res = await this.$http.post('/post')
@@ -128,13 +147,15 @@
             
             // Sentence Boundary Detection Test
             // const res = await this.$http.post('/sbd',
-            // [{
+            // {
             //     text: this.textareaLeft,
             //     lang: 'zh'
-            // },{
+            // })
+            // const res = await this.$http.post('/sbd',
+            // {
             //     text: this.textareaRight,
             //     lang: 'en'
-            // }])
+            // }]
 
             // Sentence Similarity Test
             // const res = await this.$http.post('/text_similarity',{
@@ -144,10 +165,10 @@
             // console.log(res)
 
             // Translation Test
-            const res = await this.$http.post('/text-translate',{
-                src: this.textareaRight,
-            })
-            console.log(res)
+            // const res = await this.$http.post('/text-translate',{
+            //     src: this.textareaRight,
+            // })
+            // console.log(res)
         }
 
 

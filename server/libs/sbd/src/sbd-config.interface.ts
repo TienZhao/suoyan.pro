@@ -1,7 +1,10 @@
-export interface SbdConfig {
+export type sbdLanguage = 'zh' | 'en' | 'es'
+
+export interface SbdRequest {
     text: string;
-    lang: 'en' | 'zh';
+    lang: sbdLanguage;
     sentenceArray?: string[];
+    sentenceLineBreak?: string;
 }
 
 /* Sample Request:

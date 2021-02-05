@@ -40,10 +40,9 @@ export class AdminService {
     return `${res}`;
   }
 
-  async lexicalAnalysis(body) {
+  async lexicalAnalysis(req: LexicalAnalysisRequest) {
     // console.log(body);
-    const text = body.text;
-    const result = await this.tencentcloudService.lexicalAnalysis(text);
+    const result = await this.tencentcloudService.lexicalAnalysis(req);
     return result
   }
 
@@ -54,8 +53,8 @@ export class AdminService {
   }
 
   async textTranslaste(req: TextTranslateRequest) {
-    // console.log(req);
-    // console.log(this.tencentcloudService.getTmtClient())
+    console.log(req);
+    console.log(this.tencentcloudService.getTmtClient())
     const result = await this.tencentcloudService.textTranslate(req);
     return result
   }
