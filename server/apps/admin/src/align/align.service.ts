@@ -30,7 +30,8 @@ export class AlignService {
         text: alignReq.articles[i].text,
         lang: alignReq.articles[i].lang,
       };
-      newArticles.push(this.sbdService.splitSentence([sbdReq])[0]);
+      const sbdRes = this.sbdService.splitSentence([sbdReq])[0]
+      newArticles.push(sbdRes);
     }
     alignReq.articles = newArticles;
 
@@ -171,10 +172,6 @@ export class AlignService {
     const result = await this.tencentcloudService.textTranslate(req);
     return result
   }
-
-
-
-
 
   async getHello(): Promise<string> {
     const result = this.neo4jService.read('MATCH (n) RETURN count(n) AS COUNT', {});

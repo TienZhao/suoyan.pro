@@ -32,7 +32,7 @@ export class SbdService {
         item.sentenceArray = tokenizer.sentences(text, optional_options);
         item.sentenceLineBreak = item.sentenceArray.join('\n');
         // console.log(item)
-        return item
+        return JSON.parse(JSON.stringify(item)) 
     }
 
     // Chinese sentence boundary detection

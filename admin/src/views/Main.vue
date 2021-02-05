@@ -63,6 +63,8 @@
                 </el-col>
                 <el-col :span="12" :offset="0"></el-col>
             </el-row>  
+
+            <div id="echart_main" style="width: 800px; height: 500px;"></div>
            
         </el-main>
 
@@ -90,7 +92,8 @@
  
  <script tang = 'ts'>
     import { Component, Vue } from 'vue-property-decorator';  
- 
+    import * as echarts from 'echarts';
+
     @Component({})
     export default class Main extends Vue{
         // Navbar
@@ -100,9 +103,11 @@
                 { title: '说明', path: '/manual' },
                 { title: '引用', path: '/referencer' },
             ]
-        }
-        textareaLeft = ''
-        textareaRight = ''
+        };
+        textareaLeft = '';
+        textareaRight = '';
+        alignResponse;
+
 
         // Methods
         async onAlign(){
@@ -116,7 +121,7 @@
 
             // Alignment Test
             const req = new( Object )
-            req.articles = new( Array)
+            req.articles = new( Array )
             req.articles.push({
                     text: this.textareaLeft,
                     lang: 'zh'
@@ -133,8 +138,11 @@
 
         async onAdvancedAlign(){
             console.log('Test align test btn clicked');
-            const res = await this.$http.post('/align_test',{})
-            console.log(res)
+            const res = await this.$http.post('/align_test',{});
+            this.alignResponse = res;
+            console.log(res);
+
+            this.renderEchart();
 
             // console.log(this.textareaLeft);
             // console.log(this.textareaRight);
@@ -171,8 +179,105 @@
             // console.log(res)
         }
 
+        renderEchart(){
+            var chartDom = document.getElementById('echart_main');
+            var myChart = echarts.init(chartDom);
+            var option;
+            var xLegend = this.alignResponse.data.articles[0].sentenceArray;
+            var yLegend = this.alignResponse.data.articles[1].sentenceArray;
+            var data = [];
 
+            console.log(xLegend);
 
+            this.alignResponse.data.relations.forEach(relation => {
+                var x, y, z;
+                z = parseInt(relation.similarity * 100000)/1000;
+                relation.nodes.forEach(node => {
+                    if(node.articleIndex == 0){
+                        x = node.sentenceIndex
+                    } else if(node.articleIndex == 1){
+                        y = node.sentenceIndex
+                    }
+                })
+                const dataNode = [x, y, z]
+                data.push(dataNode)
+            });
+
+            data = data.map(function (item) {
+                return [item[1], item[0], item[2] || '-'];
+            });
+
+            option = {
+                tooltip: {
+                    position: 'top',
+                    formatter: function (params) {
+                        var xText = xLegend[params.data[0]]
+                        var yText = yLegend[params.data[1]]
+                        var zText = params.data[2]
+                        return xText + '</br>' + yText + '</br>对齐评分:' + zText
+                    }
+                },
+                grid: {
+                    height: '80%',
+                    width: '80%',
+                    top: '50px',
+                    left: '80px',
+                },
+                xAxis: {
+                    type: 'category',
+                    data: xLegend,
+                    position: 'top',
+                    axisLabel:{
+                        interval:0,
+                        width: 60,
+                        overflow: 'truncate',
+                    },
+                    splitArea: {
+                        show: true
+                    }
+                },
+                yAxis: {
+                    type: 'category',
+                    data: yLegend,
+                    inverse: true,
+                    axisLabel:{
+                        interval:0,
+                        width: 60,
+                        overflow: 'truncate',
+                    },
+                    splitArea: {
+                        show: true
+                    }
+                },
+                visualMap: {
+                    min: 50,
+                    max: 80,
+                    calculable: true,
+                    orient: 'horizontal',
+                    left: 'center',
+                    bottom: '0%',
+                    inRange: {
+                        color: ['#b0c0f0', '#1030a0']
+                    }
+                },
+                series: [{
+                    name: 'Similarity Score',
+                    type: 'heatmap',
+                    data: data,
+                    label: {
+                        show: true
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }]
+            };
+
+            option && myChart.setOption(option);
+        }
     }
   
 </script>
