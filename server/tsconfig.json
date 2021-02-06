@@ -29,6 +29,12 @@
       ],
       "lib/sbd/*": [
         "libs/sbd/src/*"
+      ],
+      "libs/xlsx": [
+        "libs/xlsx/src"
+      ],
+      "libs/xlsx/*": [
+        "libs/xlsx/src/*"
       ]
     }
   }

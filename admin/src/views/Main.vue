@@ -177,11 +177,42 @@
 
         async onAdvancedAlign(){
             console.log('Test align test btn clicked');
-            const res = await this.$http.post('/align_test',{});
-            this.alignResponse = res;
-            console.log(res);
 
-            this.renderEchart();
+            
+            // Export Test
+            const res = await this.$http.post('/export',{});
+            console.log(res);
+            let arrayBuffer = new Int8Array(res.data.data).buffer;
+            let blob = new Blob([arrayBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }); 
+            let fileName = `test.xlsx`;
+            // type for xls: 'application/vnd.ms-excel'
+            // type for xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            if (window.navigator && window.navigator.msSaveBlob) {
+                // For IE family explorers
+                window.navigator.msSaveBlob(blob, 'test.xlsx');
+            } else {
+                // For other explorers
+                let link = document.createElement('a'); // 创建a标签
+                link.style.display = 'none';
+                let objectUrl = URL.createObjectURL(blob);
+                link.href = objectUrl;
+                link.setAttribute("download", fileName);
+                document.body.appendChild(link);
+                link.click();
+                window.URL.revokeObjectURL(link.href);
+            }
+
+
+
+            // // Align Test
+            // const res = await this.$http.post('/align_test',{});
+            // this.alignResponse = res;
+            // console.log(res);
+
+            // this.renderEchart();
+
+
+
 
             // console.log(this.textareaLeft);
             // console.log(this.textareaRight);
@@ -369,10 +400,11 @@
 
             option && myChart.setOption(option);
             myChart.resize({
+                // Resize based on content quantity
                 width: parseInt((xLegend.length * 80) + 160) + 'px',
                 height: parseInt((yLegend.length * 50) + 100) + 'px',
             });
-
+            
             myChart.on('selectchanged', function (params) {
                 console.log(params);
             });

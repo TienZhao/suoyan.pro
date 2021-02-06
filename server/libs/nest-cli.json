@@ -1,0 +1,16 @@
+{
+  "projects": {
+    "xlsx": {
+      "type": "library",
+      "root": "libs/xlsx",
+      "entryFile": "index",
+      "sourceRoot": "libs/xlsx/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/xlsx/tsconfig.lib.json"
+      }
+    }
+  },
+  "compilerOptions": {
+    "webpack": true
+  }
+}

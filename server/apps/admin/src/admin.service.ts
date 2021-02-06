@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Neo4jService } from 'libs/neo4j/src/neo4j.service';
 import { SbdService } from 'libs/sbd/src/sbd.service';
 import { TencentcloudService } from 'libs/tencentcloud/src/tencentcloud.service'
+import { XlsxService } from '../../../libs/xlsx/src/xlsx.service';
 import { LexicalAnalysisRequest, TextSimilarityRequest } from 'tencentcloud-sdk-nodejs/tencentcloud/services/nlp/v20190408/nlp_models'
 import { TextTranslateRequest } from 'tencentcloud-sdk-nodejs/tencentcloud/services/tmt/v20180321/tmt_models';
 
@@ -18,7 +19,8 @@ export class AdminService {
 
   constructor(private readonly neo4jService: Neo4jService,
     private readonly tencentcloudService: TencentcloudService,
-    private readonly sbdService: SbdService
+    private readonly sbdService: SbdService,
+    private readonly xlsxService: XlsxService
     ) {}
 
   async getHello(): Promise<string> {
@@ -62,6 +64,12 @@ export class AdminService {
   // sbd stands for sentence boundary detection
   sbd(body){
     const result = this.sbdService.splitSentence(body);
+    // console.log(result);
+    return result
+  }
+
+  testExportXlsx(){
+    const result = this.xlsxService.testExportXlsx();
     // console.log(result);
     return result
   }

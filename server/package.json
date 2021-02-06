@@ -28,6 +28,7 @@
     "class-transformer": "^0.3.2",
     "fastify-swagger": "^4.0.1",
     "neo4j-driver": "^4.2.2",
+    "node-xlsx": "^0.16.1",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.3",
@@ -84,7 +85,9 @@
       "lib/tencentcloud/(.*)": "<rootDir>/libs/tencentcloud/src/$1",
       "lib/tencentcloud": "<rootDir>/libs/tencentcloud/src",
       "lib/sbd/(.*)": "<rootDir>/libs/sbd/src/$1",
-      "lib/sbd": "<rootDir>/libs/sbd/src"
+      "lib/sbd": "<rootDir>/libs/sbd/src",
+      "libs/xlsx/(.*)": "<rootDir>/libs/xlsx/src/$1",
+      "libs/xlsx": "<rootDir>/libs/xlsx/src"
     }
   }
 }

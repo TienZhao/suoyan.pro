@@ -5,7 +5,7 @@ import { AdminService } from './admin.service';
 import { LexicalAnalysisRequest, TextSimilarityRequest } from 'tencentcloud-sdk-nodejs/tencentcloud/services/nlp/v20190408/nlp_models'
 import { TextTranslateRequest } from 'tencentcloud-sdk-nodejs/tencentcloud/services/tmt/v20180321/tmt_models';
 import { ApiTags } from '@nestjs/swagger'
-import { AlignRequest } from './align/align.model';
+// import { AlignRequest } from './align/align.model';
 import { AlignService } from './align/align.service'
 
 @Controller()
@@ -92,6 +92,12 @@ export class AdminController {
   @Post('align_test')
   align_test(@Body() req) {
     const postRes = this.alignService.alignArticlesTest()
+    return postRes  
+  }
+
+  @Post('export')
+  export(@Body() req) {
+    const postRes = this.adminService.testExportXlsx()
     return postRes  
   }
 }
