@@ -7,16 +7,21 @@ export class SbdService {
     splitSentence(body: SbdRequest[]){
         body.forEach(async (item)=>{
             switch  (item.lang){
-                case  'en':
-                    item = await this.en(item)
-                case  'es':
-                    item = await this.en(item)
+                case  'en': // English
+                case  'es': // Spanish
+                case  'fr': // French
+                case  'de': // German
+                case  'it': // Italian
+                case  'pt': // Portuguese
+                case  'ru': // Russian
+                    item = await this.en(item) // Cary out SBD using English punctuation rules.
                 case  'zh':
-                    item = this.zh(item)
+                    item = this.zh(item) // Cary out SBD using Chinese punctuation rules.
             }
         });
         return body
     }
+
     // English sentence boundary detection
     en(item: SbdRequest){
         var tokenizer = require('sbd');

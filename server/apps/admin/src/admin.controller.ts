@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ObjectUnsubscribedError } from 'rxjs';
 import { AdminService } from './admin.service';
 // import { AlignService } from './align/align.service';
@@ -16,7 +16,7 @@ export class AdminController {
       private readonly alignService: AlignService,
     ) {}
 
-  @Get()
+  @Get('get_hello')
   async getHello(): Promise<string> {
     const greeting = await this.adminService.getHello();
     return greeting

@@ -1,15 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-export type supportedLanguage = 'zh' | 'es' | 'en'
+export type AlignLanguage = 'zh' | 'en' | 'es' | 'fr' | 'de' | 'it' | 'pt' | 'ru'
 
 export interface Article {
     text: string,
-    lang: supportedLanguage
+    lang: AlignLanguage
     sentenceArray?: string[],
     sentenceLineBreak?: string,
-    sentenceTranslatedArray?: string[],
-    sentenceTranslatedLineBreak?: string,
-    langTranslated?: supportedLanguage
+    translSentenceArray?: string[],
+    translSentenceLineBreak?: string,
+    translLang?: AlignLanguage
 }
 
 export interface TextNode {
@@ -19,14 +19,14 @@ export interface TextNode {
     lang: string
 }
 
-export interface Relation{
+export interface Relation {
     nodes: [TextNode, TextNode],
     similarity: number,
     method: string
 }
 
-export class AlignRequest {   
-    @ApiProperty({description: '对齐请求'})
+export class AlignRequest {
     articles: Article[];
-    relations?: Relation[]
+    relations?: Relation[];
+    projectID?: string;
 }

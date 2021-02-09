@@ -1,4 +1,8 @@
-export type sbdLanguage = 'zh' | 'en' | 'es'
+import { AlignLanguage } from '../../../apps/admin/src/align/align.model';
+
+export type sbdLanguage = AlignLanguage
+
+
 
 export interface SbdRequest {
     text: string;
