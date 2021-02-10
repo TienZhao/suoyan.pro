@@ -22,6 +22,7 @@ export interface TextNode {
 export interface Relation {
     nodes: [TextNode, TextNode],
     similarity: number,
+    hit?: boolean,
     method: string
 }
 

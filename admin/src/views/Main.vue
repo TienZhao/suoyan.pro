@@ -347,7 +347,7 @@
                     }
                 })
                 dataNode.value = [x, y, z] // Replace the data.map in Echarts tutorial.
-                if (z > 70){ // Binarize align result (sample condition)
+                if (relation.hit){ // Binarized align result
                     dataNode.selected = true;
                     // Store default selection to this.alignChartSelection
                     this.alignChartSelection.push([yLegend[y], xLegend[x]]);

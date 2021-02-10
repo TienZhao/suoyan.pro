@@ -141,7 +141,8 @@ export class AlignService {
             lang: 'zh'
           }],
           similarity: sim.Score,
-          method: 'tmt-relay'
+          method: 'tmt-relay',
+          hit: false,
         }
         relationArray.push(newRelation)
         // Decide lastHitIndex
@@ -151,6 +152,26 @@ export class AlignService {
         }
       }
     }
+    // Binarize align result
+    // Rule 1: similarity score >= HITSCORETHRESHOLD.
+    relationArray.forEach(relation => {
+      if(relation.similarity >= HITSCORETHRESHOLD){relation.hit = true}
+    })
+    // Rule 2: highest similarity score (in the row and in the column).
+    relationArray.forEach(relationA => {
+      const xA = relationA.nodes[0].sentenceIndex;
+      const yA = relationA.nodes[1].sentenceIndex;
+      const zA = relationA.similarity;
+      var hit = relationArray.every(relationB =>{
+        const xB = relationB.nodes[0].sentenceIndex;
+        const yB = relationB.nodes[1].sentenceIndex;
+        const zB = relationB.similarity;
+        if((xA == xB || yA == yB) && zA < zB){return false;}
+        else{return true;}
+      })
+      if(hit){relationA.hit = true;}
+    })
+
     alignReq.relations = relationArray
     console.log(alignReq)
     return alignReq
