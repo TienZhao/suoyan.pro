@@ -96,8 +96,8 @@ export class AdminController {
   }
 
   @Post('export')
-  export(@Body() req) {
-    const postRes = this.adminService.testExportXlsx()
+  export(@Body() data) {
+    const postRes = this.adminService.ExportXlsx(data)
     return postRes  
   }
 }

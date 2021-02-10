@@ -68,8 +68,8 @@ export class AdminService {
     return result
   }
 
-  testExportXlsx(){
-    const result = this.xlsxService.testExportXlsx();
+  ExportXlsx(data){
+    const result = this.xlsxService.exportXlsx(data);
     // console.log(result);
     return result
   }
