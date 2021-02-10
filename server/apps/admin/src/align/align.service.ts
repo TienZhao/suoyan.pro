@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { Neo4jService } from 'libs/neo4j/src/neo4j.service';
 import { Neo4jSentenceTranslationRequest, Neo4jCreateSentenceRequest, Neo4jCreateTranslationRequest, Neo4jCreateSimilarityRequest, Neo4jSentenceSimilarityRequest } from 'libs/neo4j/src/neo4j.model';
 import { SbdService } from 'libs/sbd/src/sbd.service';
 import { TencentcloudService } from 'libs/tencentcloud/src/tencentcloud.service'
 import { LexicalAnalysisRequest, Similarity, TextSimilarityRequest } from 'tencentcloud-sdk-nodejs/tencentcloud/services/nlp/v20190408/nlp_models'
-import { TextTranslateRequest } from 'tencentcloud-sdk-nodejs/tencentcloud/services/tmt/v20180321/tmt_models';
+import { TextTranslateRequest, LanguageDetectRequest } from 'tencentcloud-sdk-nodejs/tencentcloud/services/tmt/v20180321/tmt_models';
 import { AlignRequest, Article, Relation, AlignLanguage} from './align.model';
 import { SbdRequest } from 'libs/sbd/src/sbd-config.interface';
 import { ALIGN_RESPONSE } from './align.test'
@@ -22,6 +22,29 @@ export class AlignService {
   }
 
   async alignArticles(alignReq: AlignRequest) {
+    // Step 0: Detect the language of article inputs.
+    // Laguage Detect is based on tencentcloudService.
+    // Document: https://cloud.tencent.com/document/api/551/15620
+    // Pricing: Free of charge, according to Tencentcloud service chat.
+    for (var i = 0; i < alignReq.articles.length; i++ ){
+      const ldReq: LanguageDetectRequest = {
+        Text: alignReq.articles[i].text,
+        ProjectId: 0,
+      };
+      const ldRes = await this.tencentcloudService.languageDetect(ldReq);
+      if(alignReq.articles[i].lang == 'auto'){
+        // If input language parameter is 'auto', give it a decent language code.
+        alignReq.articles[i].lang = ldRes.Lang as AlignLanguage;
+      } else {
+        // Otherwise, determine if the input language parameter is correct.
+        if(ldRes.Lang != alignReq.articles[i].lang){
+          // Throw an error when incorrect.
+          console.log(`Input language of article ${i} seems incorrect!`)
+          throw new HttpException(`Input language of article ${i} seems incorrect! For safety reasons, Yanyes (alpha) blocks any request with a language parameter different from the language detection result of the text.`, HttpStatus.BAD_REQUEST);
+        }
+      }
+    }
+
     // Step 1: Split article into sentences with sbd modle.
     // sbdService is a local service, thus the cost of call is virtually zero.
     var newArticles = [];

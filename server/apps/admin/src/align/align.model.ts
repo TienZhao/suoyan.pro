@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger'
 
-export type AlignLanguage = 'zh' | 'en' | 'es' | 'fr' | 'de' | 'it' | 'pt' | 'ru'
+export type AlignLanguage = 'zh' | 'en' | 'es' | 'fr' | 'de' | 'it' | 'pt' | 'ru' | 'auto'
 
 export interface Article {
     text: string,

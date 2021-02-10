@@ -3,8 +3,8 @@ import { TENCENTCLOUD_CONFIG, TENCENTCLOUD_CLIENT, TENCENTCLOUD_TMT_CLIENT } fro
 import { ClientConfig } from "tencentcloud-sdk-nodejs/tencentcloud/common/interface";
 import { Client as NlpClient} from "tencentcloud-sdk-nodejs/tencentcloud/services/nlp/v20190408/nlp_client"
 import { Client as TmtClient} from "tencentcloud-sdk-nodejs/tencentcloud/services/tmt/v20180321/tmt_client"
-import { LexicalAnalysisRequest, LexicalAnalysisResponse, TextSimilarityRequest } from 'tencentcloud-sdk-nodejs/tencentcloud/services/nlp/v20190408/nlp_models'
-import { TextTranslateRequest } from 'tencentcloud-sdk-nodejs/tencentcloud/services/tmt/v20180321/tmt_models';
+import { LexicalAnalysisRequest, TextSimilarityRequest } from 'tencentcloud-sdk-nodejs/tencentcloud/services/nlp/v20190408/nlp_models'
+import { LanguageDetectRequest, TextTranslateRequest } from 'tencentcloud-sdk-nodejs/tencentcloud/services/tmt/v20180321/tmt_models';
 
 
 @Injectable()
@@ -42,6 +42,11 @@ export class TencentcloudService {
 
     async textTranslate(req: TextTranslateRequest){
         const res = await this.tmtClient.TextTranslate(req)
+        return res
+    }
+
+    async languageDetect(req: LanguageDetectRequest){
+        const res = await this.tmtClient.LanguageDetect(req)
         return res
     }
 
