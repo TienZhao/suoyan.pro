@@ -5,7 +5,7 @@
             <el-row :gutter="20">
                 <!-- Title -->
                 <el-col :span="16" :offset="0">
-                    <el-image style="width: 114px; height: 50px" :src="require('../assets/yanyes_logo_100p.png')" fit="contain" ></el-image>
+                    <el-image style="width: 522px; height: 80px" :src="require('../assets/suoyan.pro.header.png')" fit="contain" ></el-image>
                 </el-col>
                 <el-col :span="8" :offset="0" >
                 <!-- Header Navbar -->
@@ -27,7 +27,7 @@
         <el-main direction="vertical">
             <!-- Main content -->
             <div v-if="step == 1">
-                <el-row :gutter="20">
+                <el-row :gutter="20" style="margin-top: 20px;">
                     <el-col :span="12" :offset="0">
                         <!-- Language Button Left -->
                         <el-radio-group v-model="langRadioLeft" size="medium" @change="onChangeLangRadioLeft">
