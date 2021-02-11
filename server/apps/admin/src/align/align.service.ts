@@ -40,7 +40,7 @@ export class AlignService {
         if(ldRes.Lang != alignReq.articles[i].lang){
           // Throw an error when incorrect.
           console.log(`Input language of article ${i} seems incorrect!`)
-          throw new HttpException(`Input language of article ${i} seems incorrect! For safety reasons, Yanyes (alpha) blocks any request with a language parameter different from the language detection result of the text.`, HttpStatus.BAD_REQUEST);
+          throw new HttpException(`Input language of article ${i} seems incorrect! For safety reasons, Suoyan.pro (alpha) blocks any request with a language parameter different from the language detection result of the text.`, HttpStatus.BAD_REQUEST);
         }
       }
     }

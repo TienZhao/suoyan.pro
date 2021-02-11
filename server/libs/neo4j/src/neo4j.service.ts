@@ -43,7 +43,7 @@ export class Neo4jService {
         var res
         if (searchResult.records.length == 0){
             // Create a sentence node when it doesn't exist.
-            const cypherSentenceWrite = `CREATE (a:Sentence {text: '${req.text}', lang: '${req.lang}', gene: '${req.gene}', project: 'yanyesAlpha', user: 'yanyes'}) RETURN a`
+            const cypherSentenceWrite = `CREATE (a:Sentence {text: '${req.text}', lang: '${req.lang}', gene: '${req.gene}', project: 'suoyan.pro', user: 'yanyes'}) RETURN a`
             res = this.write(cypherSentenceWrite, {});
         } else {
             res = searchResult.records[0];
@@ -52,7 +52,7 @@ export class Neo4jService {
     }
 
     async neo4jCreateTranslation(req: Neo4jCreateTranslationRequest){
-        const cypherSentence = `MATCH (a:Sentence) WHERE a.text = '${req.srcSentence}' AND a.lang = '${req.srcLang}' CREATE (a)-[r:TRANSL {gene: '${req.gene}', provider: '${req.provider}'}]->(b:Sentence {text: '${req.tgtSentence}', lang: '${req.tgtLang}', gene: '${req.gene}', project: 'yanyesAlpha', user: 'yanyes'}) RETURN r,b`
+        const cypherSentence = `MATCH (a:Sentence) WHERE a.text = '${req.srcSentence}' AND a.lang = '${req.srcLang}' CREATE (a)-[r:TRANSL {gene: '${req.gene}', provider: '${req.provider}'}]->(b:Sentence {text: '${req.tgtSentence}', lang: '${req.tgtLang}', gene: '${req.gene}', project: 'suoyan.pro', user: 'yanyes'}) RETURN r,b`
         const res = this.write(cypherSentence, {});  
         return res
     }
