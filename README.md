@@ -21,7 +21,7 @@ Neo4j + Vue.js + NestJS
 
 #### Neo4j
 
-- Since the Neo4j graph database is not included in the in git scope, you need to install it separately by yourself, then create a new Graph, set account & password, and run it.
+- The Neo4j graph database is located in the `neo4j` directory. Neo4j runs at `localhost:7474` by default and it can be be accessed through a browser.
 - Before running the NestJS backend, you also need to configure the account, password, and port of Neo4j in the `server\apps\admin\src\admin.credentials.ts` file. The example is as follows.
 
 ```typescript
@@ -96,7 +96,7 @@ The developer of suoyan.pro wants to work with other professionals to make progr
 
 #### Neo4j
 
-Neo4j图数据库未被收录在在git范围内，需要另行安装，新建Graph，设置账号密码，并运行。
+Neo4j图数据库位于`neo4j`目录中，默认运行在`localhost:7474`，可以通过浏览器进行访问。
 运行NestJS后端之前，需要配置`server\apps\admin\src\admin.credentials.ts`文件中的Neo4j账号、密码、端口。示例如下：
 
 ```typescript
