@@ -1816,7 +1816,7 @@ exports.TencentcloudCredential = {
 };
 exports.Neo4jCredential = {
     scheme: 'bolt',
-    host: 'localhost',
+    host: 'neo4j',
     port: 7687,
     username: 'neo4j',
     password: 'FengTu',

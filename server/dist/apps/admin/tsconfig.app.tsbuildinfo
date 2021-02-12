@@ -1542,8 +1542,8 @@
         "affectsGlobalScope": false
       },
       "../../../apps/admin/src/admin.credentials.ts": {
-        "version": "3bf0e7af49ea0450f76b9ecdd958d2ade64948cf4a23e304a0fc356cf967e4f9",
-        "signature": "487beda2417bc37bf62805d9099d2d871a89236a97b4b94cfc8e7a3c9cb61f6b",
+        "version": "c09c9c9781eb41afbcd92498c05f86763bb8bbf4a814073097d4d3eaa8989483",
+        "signature": "f4b9aa8f853e1edaafd1a71440a8f1565c8b9213eb28114c47710ce378f3f3b6",
         "affectsGlobalScope": false
       },
       "../../../libs/neo4j/src/neo4j.util.ts": {
@@ -3983,12 +3983,12 @@
       },
       "../../../apps/admin/src/align/align.module.ts": {
         "version": "7f31c0255c35d259f9dbbabda4708b08eacafcd3decdc01540708051a235c20f",
-        "signature": "a807938fdd8d43d57920ead0411d25f851584bb648484095aadd28eacba1f2fc",
+        "signature": "6fa8e2701d5db4b2d0a5dd54da9ba11809952ed63909ebe5dab607a634ae1168",
         "affectsGlobalScope": false
       },
       "../../../apps/admin/src/admin.module.ts": {
         "version": "39179b15ad04e47dbd104dfe808051b4561cc6fe51f913c1ce5573576ad39e5a",
-        "signature": "c449d1d303e8e724fb278db06b787aa8d284b075dbc8283516087957a1885489",
+        "signature": "4cb17d629e7bb0df751ae3e10d78a23d59ea51fc7c02044f9a003ba6f36fedf7",
         "affectsGlobalScope": false
       },
       "../../../node_modules/@nestjs/core/adapters/http-adapter.d.ts": {
@@ -4173,7 +4173,7 @@
       },
       "../../../apps/admin/src/main.ts": {
         "version": "a66ad93367a1232f707d4fd461e2f645ffdc5bc9ca8b3180f0e5221696c1502b",
-        "signature": "f761c91419d0a89422a0004ef1a92929dd4d2d5e5c16758654d8b0467d1998c6",
+        "signature": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
         "affectsGlobalScope": false
       },
       "../../../node_modules/@types/anymatch/index.d.ts": {
@@ -4760,7 +4760,7 @@
           "libs/xlsx/src/*"
         ]
       },
-      "pathsBasePath": "C:/HelloWorld/suoyan.pro/server",
+      "pathsBasePath": "/usr/src/server",
       "skipLibCheck": true,
       "inlineSourceMap": false,
       "declarationMap": false,

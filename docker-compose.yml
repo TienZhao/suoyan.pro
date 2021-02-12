@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  neo4j:
+    image: neo4j:latest
+    volumes:
+      # - ./neo4j/conf:/var/lib/neo4j/conf
+      - ./neo4j/import:/var/lib/neo4j/import
+      - ./neo4j/plugins:/plugins
+      - ./neo4j/data:/data
+      - ./neo4j/logs:/logs
+    restart: always
+    ports:
+      - 7474:7474
+      - 7687:7687
+    environment:
+      - NEO4J_dbms_memory_heap_maxSize=1G
+      - NEO4J_AUTH=neo4j/FengTu
+  
+  nestjs:
+    image: node:${NODE_VERSION}
+    working_dir: /usr/src/server
+    command: npm config set registry https://registry.npm.taobao.org
+    command: npm run start admin
+    volumes:
+      - ./server:/usr/src/server
+    restart: always
+    ports:
+      - 3000:3000
+  
+  vue:    
+    image: node:${NODE_VERSION}
+    working_dir: /usr/src/admin
+    command: npm config set registry https://registry.npm.taobao.org
+    command: npm run serve
+    restart: always
+    volumes:
+      - ./admin:/usr/src/admin
+    environment:
+      - SERVICE_NAME=vue    
+    expose:
+      - "80"
+    ports:
+      - "8080:8080"
