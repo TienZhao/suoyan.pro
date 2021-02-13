@@ -5,6 +5,9 @@ logs/*
 # Metrics
 metrics/*
 
+bin/
+lib/
+
 # IDE - VSCode
 .vscode/*
 !.vscode/settings.json
