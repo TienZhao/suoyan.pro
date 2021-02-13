@@ -1,28 +1,8 @@
 <template>
     <el-container direction="vertical">
-        <el-header>
-            <!-- Header content -->
-            <el-row :gutter="20">
-                <!-- Title -->
-                <el-col :span="16" :offset="0">
-                    <el-image style="width: 522px; height: 80px" :src="require('../assets/suoyan.pro.header.png')" fit="contain" ></el-image>
-                </el-col>
-                <el-col :span="8" :offset="0" >
-                <!-- Header Navbar -->
-                    <el-menu 
-                        mode="horizontal" 
-                        default-active="$route.path" 
-                        router
-                        style="float: right; height: 50px">
-                        <el-menu-item v-for="(item, index) in headerNavMenu.items"
-                            :index="item.path"
-                            :key="`headerNavMenuItem-${index}`">
-                                {{item.title}}
-                        </el-menu-item>
-                    </el-menu>
-                </el-col>
-            </el-row>
-        </el-header>
+        <Header>
+            <!-- Using @/components/Header.vue -->
+        </Header>
 
         <el-main direction="vertical">
             <!-- Main content -->
@@ -101,15 +81,12 @@
             style="position: fixed; bottom: 0px; font-size: 16px; color: #999; width: 100%; 
             text-align:center;">
             <!-- Footer content -->
-            <el-row
-                style="display:inline/inline-block;">
-                <label>所言极是</label>
+            <el-row style="display:inline/inline-block;">
+                <label><a href='/' style="color: gray;text-decoration:none">所言极是</a></label>
                 <label> | </label>
-                <label>隐私</label>
+                <label><a href='/privacy' style="color: gray;text-decoration:none">隐私</a></label>
                 <label> | </label>
-                <label>条款</label>
-                <label> | </label>
-                <label>声明</label>
+                <label><a href='/imprint' style="color: gray;text-decoration:none">声明</a></label>
             </el-row>
 
         </el-footer>
@@ -121,15 +98,20 @@
  <script tang = 'ts'>
     import { Component, Vue } from 'vue-property-decorator';  
     import * as echarts from 'echarts';
+    import Header from '@/components/Header.vue'
 
-    @Component({})
+    @Component({
+        components: {
+            Header,
+        },
+    })
     export default class Main extends Vue{
         // Navigation bar
         headerNavMenu = {
             items: [
                 { title: '首页', path: '/' },
                 { title: '说明', path: '/manual' },
-                { title: '引用', path: '/referencer' },
+                { title: '引用', path: '/reference' },
             ]
         }; 
 
