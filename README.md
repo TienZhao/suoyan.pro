@@ -19,6 +19,10 @@ Neo4j + Vue.js + NestJS
 
 - The technical structure of suoyan.pro includes three parts: Neo4j database, NestJS back-end and Vue front-end. It also uses the services of natural language processing and machine translation offered by Tencent Cloud.
 
+#### Docker
+
+- `docker-compose.yml` is located in the root directory, where you can run the whole project with`docker-compose up` command.
+
 #### Neo4j
 
 - The Neo4j graph database is located in the `neo4j` directory. Neo4j runs at `localhost:7474` by default and it can be be accessed through a browser.
@@ -36,13 +40,18 @@ export const Neo4jCredential: Neo4jConfig = {
 
 #### NestJS
 
-- The NestJS backend framework is located in the `server` directory, in which you can run NestJS with the `nest start -w admin` command. NestJS runs at `localhost:3000` by default, and the interface documentation Swagger runs at `localhost:3000/api-docs/`, both of which can be be accessed through a browser.
+- The NestJS backend framework is located in the `server` directory, in which you can run NestJS in hot reload mode with the `nest start -w admin` command. NestJS runs at `localhost:3000` by default, and the interface documentation Swagger runs at `localhost:3000/api-docs/`, both of which can be be accessed through a browser.
 - NestJS code is written in Typescript.
 
 #### Vue
 
-- ,The Vue front-end framework is located in the `admin` directory, in which you can run Vue with the `npm run serve` command. Vue runs at `localhost:8080` by default and can be accessed through a browser.
+- ,The Vue front-end framework is located in the `admin` directory, in which you can run Vue with the `npm run serve` command on `localhost:8080` and access it with a browser.
 - Vue code is written in Typescript. It uses Element UI and Echarts component libraries .
+
+#### Nginx
+
+- `nginx.config` is located in `admin` directory.
+- Nginx runs the built Vue code in `admin/dist` and forwards it to`localhost:8081`.
 
 #### Tencent Cloud Service
 
@@ -58,7 +67,7 @@ export const TencentcloudCredential: ClientConfig = {
       secretId: "", // Your Secret ID here.
       secretKey: "", // Your Secret key here.
     },
-    region: "ap-guangzhou", // Tencentcloud NLP service supported region.
+    region: "ap-guangzhou", // Tencentcloud NLP service only available in this region.
     profile: {
       signMethod: "HmacSHA256",
       httpProfile: {
@@ -92,7 +101,11 @@ The developer of suoyan.pro wants to work with other professionals to make progr
 
 ### 技术简介
 
-所言的技术架构包括Neo4j数据库、NestJS后端、Vue前端三个部分；使用腾讯云的自然语言处理和机器翻译服务。
+所言的技术架构包括Neo4j数据库、NestJS后端、Vue前端、Nginx服务器，运行于4个独立的Docker容器内。所言也使用腾讯云的自然语言处理和机器翻译服务。
+
+#### Docker
+
+`docker-compose.yml`文件位于根目录中，可以使用`docker-compose up`命令运行整个项目。
 
 #### Neo4j
 
@@ -111,13 +124,19 @@ export const Neo4jCredential: Neo4jConfig = {
 
 #### NestJS
 
-NestJS后端框架位于`server`目录中，可以在该目录下使用`nest start -w admin`命令运行，NestJS默认运行在`localhost:3000`，接口文档Swagger运行在`localhost:3000/api-docs/`，可以通过浏览器进行访问。
+NestJS后端框架位于`server`目录中，可以在该目录下使用`nest start -w admin`命令进行热重载运行，NestJS默认运行在`localhost:3000`，接口文档Swagger运行在`localhost:3000/api-docs/`，可以通过浏览器进行访问。
 NestJS代码以Typescript语言撰写。
 
 #### Vue
 
-Vue前端框架位于`admin`目录中，可以在该目录下使用`npm run serve`命令运行。Vue默认运行在`localhost:8080`，可以通过浏览器进行访问。
+Vue前端框架位于`admin`目录中，可以在该目录下，使用`npm run serve`命令运行到`localhost:8080`，并通过浏览器进行访问。
 Vue代码以Typescript语言撰写，使用了Element UI和Echarts组件库。
+
+#### Nginx
+
+`nginx.config`位于`admin`目录中。
+
+Nginx运行`admin/dist`中编译后的Vue代码，并转发到`localhost:8081`。
 
 #### 腾讯云
 
@@ -129,7 +148,7 @@ export const TencentcloudCredential: ClientConfig = {
       secretId: "", // Your Secret ID here.
       secretKey: "", // Your Secret key here.
     },
-    region: "ap-guangzhou", // Tencentcloud NLP service supported region.
+    region: "ap-guangzhou", // Tencentcloud NLP service only available in this region.
     profile: {
       signMethod: "HmacSHA256",
       httpProfile: {
