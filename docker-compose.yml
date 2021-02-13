@@ -17,41 +17,42 @@ services:
       - NEO4J_dbms_memory_heap_maxSize=1G
       - NEO4J_AUTH=neo4j/FengTu
   
+  # # For development 
+  # nestjs:
+  #   image: node:${NODE_VERSION}
+  #   working_dir: /usr/src/server
+  #   volumes:
+  #     - ./server:/usr/src/server
+  #   command: npm config set registry https://registry.npm.taobao.org
+  #   command: npm run start admin    
+  #   restart: always
+  #   ports:
+  #     - 3000:3000
+
+  # For Production
   nestjs:
-    image: node:${NODE_VERSION}
-    working_dir: /usr/src/server
-    volumes:
-      - ./server:/usr/src/server
-    command: npm config set registry https://registry.npm.taobao.org
-    # For production
-    command: npm run build admin
-    command: node dist/apps/admin/main.js
-    # For development 
-    # command: npm run start admin    
-    restart: always
+    build: ./server
     ports:
-      - 3000:3000
+      - "3000:3000"
   
-  vue:    
-    image: node:${NODE_VERSION}
-    working_dir: /usr/src/admin
-    command: npm config set registry https://registry.npm.taobao.org
-    # For production
-    command: npm run build
-    restart: on-failure
-    # For development 
-    # command: npm run serve
-    # restart: always
-    volumes:
-      - ./admin:/usr/src/admin
-    environment:
-      - SERVICE_NAME=vue    
-    expose:
-      - "80"
-    ports:
-      - "8080:8080"
+      
+  # # For development 
+  # vue:    
+  #   image: node:${NODE_VERSION}
+  #   working_dir: /usr/src/admin
+  #   command: npm config set registry https://registry.npm.taobao.org
+  #   command: npm run serve
+  #   restart: always
+  #   volumes:
+  #     - ./admin:/usr/src/admin
+  #   environment:
+  #     - SERVICE_NAME=vue    
+  #   expose:
+  #     - "80"
+  #   ports:
+  #     - "8080:8080"
   
   nginx:
     build: ./admin
     ports:
-      - "8081:8080"
+      - "8080:8080"
