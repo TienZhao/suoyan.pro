@@ -5,8 +5,8 @@ logs/*
 # Metrics
 metrics/*
 
-bin/
-lib/
+bin/*
+lib/*
 
 # IDE - VSCode
 .vscode/*

@@ -2,3 +2,4 @@ notes.md
 server/apps/admin/src/admin.credentials.ts
 *.log
 server/dist/apps/admin/tsconfig.app.tsbuildinfo
+*.tsbuildinfo
