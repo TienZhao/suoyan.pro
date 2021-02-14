@@ -60,7 +60,7 @@
                 </el-row>  
             </div>
 
-            <el-row :gutter="20">
+            <el-row :gutter="20" overflow="auto">
                 <div id="alignChartMain" v-loading="alignChartLoading"></div>
             </el-row>
 
@@ -349,6 +349,7 @@
             option = {
                 tooltip: {
                     position: 'top',
+                    confine: true,
                     formatter: function (params) {
                         var xText = xLegend[params.data.value[0]]
                         var yText = yLegend[params.data.value[1]]
