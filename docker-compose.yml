@@ -11,9 +11,9 @@ services:
       - ./neo4j/logs:/logs
     restart: always
     ports:
-      - 27473:7473
-      - 27474:7474
-      - 27687:7687
+      - 7473:7473
+      - 7474:7474
+      - 7687:7687
     environment:
       - NEO4J_dbms_memory_heap_maxSize=1G
       - NEO4J_AUTH=neo4j/FengTu
@@ -34,7 +34,7 @@ services:
   nestjs:
     build: ./server
     ports:
-      - "23000:3000"
+      - "3000:3000"
   
       
   # For development 

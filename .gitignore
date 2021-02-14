@@ -3,3 +3,4 @@ server/apps/admin/src/admin.credentials.ts
 *.log
 server/dist/apps/admin/tsconfig.app.tsbuildinfo
 *.tsbuildinfo
+server/dist/apps/admin/main.js
