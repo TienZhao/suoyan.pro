@@ -3,16 +3,16 @@
         <!-- Header content -->
         <el-row :gutter="20">
             <!-- Title -->
-            <el-col :span="16" :offset="0">
-                <el-image style="width: 522px; height: 80px" :src="require('../assets/suoyan.pro.header.png')" fit="contain" ></el-image>
+            <el-col :span="12" :offset="0" style="float: left; width: 375px; height: 60px">
+                <el-image style="float: left" :src="require('../assets/suoyan.pro.header.png')" fit="contain" ></el-image>
             </el-col>
-            <el-col :span="8" :offset="0" >
+            <el-col :span="12" :offset="0" style="float: right; width: 220px" >
             <!-- Header Navbar -->
                 <el-menu 
                     mode="horizontal" 
                     default-active="$route.path" 
                     router
-                    style="float: right; height: 50px">
+                    style="float: right; height: 50px; width: 220px;">
                     <el-menu-item v-for="(item, index) in headerNavMenu.items"
                         :index="item.path"
                         :key="`headerNavMenuItem-${index}`">

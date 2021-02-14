@@ -7,7 +7,7 @@
         <el-main direction="vertical">
             <!-- Main content -->
             <div v-if="step == 1">
-                <el-row :gutter="20" style="margin-top: 20px;">
+                <el-row :gutter="20" style="margin-top: 50px;">
                     <el-col :span="12" :offset="0">
                         <!-- Language Button Left -->
                         <el-radio-group v-model="langRadioLeft" size="medium" @change="onChangeLangRadioLeft">
@@ -52,12 +52,11 @@
 
                 <el-row :gutter="20" style="margin-top: 20px;">
                     <!-- Buttons -->
-                    <el-col :span="12" :offset="0" style="display: block;">
+                    <el-col :span="24" :offset="0" style="display: block;">
                         <el-button type="primary" @click="onAlign">一键对齐</el-button>
                         <!-- <el-button type="primary" plain  @click="onAdvancedAlign">模拟对齐</el-button> -->
                         <el-button type="primary" plain  @click="onRandomAlign">随便试试</el-button>
                     </el-col>
-                    <el-col :span="12" :offset="0"></el-col>
                 </el-row>  
             </div>
 
@@ -67,7 +66,7 @@
 
             <div v-if = "step == 2">
                 <el-row :gutter="20">
-                    <el-col :span="12" :offset="0">
+                    <el-col :span="24" :offset="0">
                         <el-button type="primary" @click="onExport">导出结果</el-button>
                         <el-button type="primary" plain @click="onBack">返回</el-button>
                     </el-col>
@@ -77,11 +76,11 @@
         </el-main>
 
         <el-footer
-            height="40px"
-            style="position: fixed; bottom: 0px; font-size: 16px; color: #999; width: 100%; 
+            height="30px"
+            style="position: fixed; bottom: 0px; font-size: 16px; color: #999; width: 100%; background-color: white; 
             text-align:center;">
             <!-- Footer content -->
-            <el-row style="display:inline/inline-block;">
+            <el-row style="display:inline/inline-block; margin-top: 5px;">
                 <label><a href='/' style="color: gray;text-decoration:none">所言极是</a></label>
                 <label> | </label>
                 <label><a href='/privacy' style="color: gray;text-decoration:none">隐私</a></label>
@@ -125,9 +124,9 @@
         langOptionsRight = [
             {label:'auto',  text:'自动检测'},
             {label:'en',  text:'英语'},
+            {label:'fr',  text:'法语'},
             {label:'es',  text:'西班牙语'},
             {label:'de',  text:'德语'},
-            {label:'fr',  text:'法语'},
             {label:'ru',  text:'俄语'},
         ]
         langRadioLeft = 'zh';       // Default value.
