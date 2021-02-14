@@ -1,4 +1,4 @@
-FROM node:latest as production
+FROM node:latest
 WORKDIR /usr/src/server
 COPY package*.json ./
 RUN npm install --only=production
