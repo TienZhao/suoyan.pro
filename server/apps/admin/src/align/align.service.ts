@@ -22,159 +22,164 @@ export class AlignService {
   }
 
   async alignArticles(alignReq: AlignRequest) {
-    // Step 0: Detect the language of article inputs.
-    // Laguage Detect is based on tencentcloudService.
-    // Document: https://cloud.tencent.com/document/api/551/15620
-    // Pricing: Free of charge, according to Tencentcloud service chat.
-    for (var i = 0; i < alignReq.articles.length; i++ ){
-      const ldReq: LanguageDetectRequest = {
-        Text: alignReq.articles[i].text,
-        ProjectId: 0,
-      };
-      const ldRes = await this.tencentcloudService.languageDetect(ldReq);
-      if(alignReq.articles[i].lang == 'auto'){
-        // If input language parameter is 'auto', give it a decent language code.
-        alignReq.articles[i].lang = ldRes.Lang as AlignLanguage;
-      } else {
-        // Otherwise, determine if the input language parameter is correct.
-        if(ldRes.Lang != alignReq.articles[i].lang){
-          // Throw an error when incorrect.
-          console.log(`Input language of article ${i} seems incorrect!`)
-          throw new HttpException(`Input language of article ${i} seems incorrect! For safety reasons, Suoyan.pro (alpha) blocks any request with a language parameter different from the language detection result of the text.`, HttpStatus.BAD_REQUEST);
+    try{
+      // Step 0: Detect the language of article inputs.
+      // Laguage Detect is based on tencentcloudService.
+      // Document: https://cloud.tencent.com/document/api/551/15620
+      // Pricing: Free of charge, according to Tencentcloud service chat.
+      for (var i = 0; i < alignReq.articles.length; i++ ){
+        const ldReq: LanguageDetectRequest = {
+          Text: alignReq.articles[i].text,
+          ProjectId: 0,
+        };
+        const ldRes = await this.tencentcloudService.languageDetect(ldReq);
+        if(alignReq.articles[i].lang == 'auto'){
+          // If input language parameter is 'auto', give it a decent language code.
+          alignReq.articles[i].lang = ldRes.Lang as AlignLanguage;
+        } else {
+          // Otherwise, determine if the input language parameter is correct.
+          if(ldRes.Lang != alignReq.articles[i].lang){
+            // Throw an error when incorrect.
+            console.log(`Input language of article ${i} seems incorrect!`)
+            throw new HttpException(`Input language of article ${i} seems incorrect! For safety reasons, Suoyan.pro (alpha) blocks any request with a language parameter different from the language detection result of the text.`, HttpStatus.BAD_REQUEST);
+          }
         }
       }
-    }
 
-    // Step 1: Split article into sentences with sbd modle.
-    // sbdService is a local service, thus the cost of call is virtually zero.
-    var newArticles = [];
-    for (var i = 0; i < alignReq.articles.length; i++ ){
-      const sbdReq: SbdRequest = {  
-        text: alignReq.articles[i].text,
-        lang: alignReq.articles[i].lang,
-      };
-      const sbdRes = this.sbdService.splitSentence([sbdReq])[0]
-      sbdRes.sentenceArray.forEach(sentence =>{
-        this.neo4jService.neo4jCreateSentenceNode({ // Create node if it doesn't exist.
-          text: sentence,
-          lang: sbdRes.lang,
-          gene: 'human'
+      // Step 1: Split article into sentences with sbd modle.
+      // sbdService is a local service, thus the cost of call is virtually zero.
+      var newArticles = [];
+      for (var i = 0; i < alignReq.articles.length; i++ ){
+        const sbdReq: SbdRequest = {  
+          text: alignReq.articles[i].text,
+          lang: alignReq.articles[i].lang,
+        };
+        const sbdRes = this.sbdService.splitSentence([sbdReq])[0]
+        sbdRes.sentenceArray.forEach(sentence =>{
+          this.neo4jService.neo4jCreateSentenceNode({ // Create node if it doesn't exist.
+            text: sentence,
+            lang: sbdRes.lang,
+            gene: 'human'
+          })
         })
-      })
-      newArticles.push(sbdRes);
-    }
-    alignReq.articles = newArticles;
-
-    // Step 2: Translate one article into Chinese and split into sentences.
-    // Text Translate is based on tencentcloudService.
-    // Document: https://cloud.tencent.com/document/product/551/15619
-    // Pricing: 5 million character every month for free; 58 CNY per million character after the free quota.
-    // Translation history is stored in Neo4j database, which can be used for future requests.
-    for (var i = 0; i < alignReq.articles.length; i++ ){
-      if (alignReq.articles[i].lang == 'zh'){
-        continue;
-      } else {
-        alignReq.articles[i].translLang = 'zh';
-        alignReq.articles[i] = await this.articleTranslate(alignReq.articles[i]);
-        // console.log(alignReq.articles[i]);
-        break;
-      }        
-    }
-
-    // Step 3: Calculate the similarity between the sentences of the translation-relayed article and those of the direct-sent article.
-    // Text Translate is based on tencentcloudService.
-    // Document: https://cloud.tencent.com/document/product/271/35506
-    // Pricing 500,000 free calls every day; 27 CNY per 10,000 call after the free quota.
-    // Similarity-calculation history is stored in Neo4j database, which can be used for future requests.
-    var directArticleIndex: number
-    var relayedArticleIndex: number
-    var relationArray: Relation[] = []
-    for (var i = 0; i < alignReq.articles.length; i++ ){
-      if (alignReq.articles[i].lang == 'zh'){
-        directArticleIndex = i;
-        continue;
-      } else {
-        relayedArticleIndex = i;
-        break;
+        newArticles.push(sbdRes);
       }
-    }
-    let relayedArticleSentences = alignReq.articles[relayedArticleIndex].translSentenceArray;
-    let directArticleSentences = alignReq.articles[directArticleIndex].sentenceArray;
-    let directArticleLength = directArticleSentences.length;
-    // Define constants based on experience.
-    // E.g. When relayed[2] is aligned with direct[2], 
-    // relayed[3] is to be compared with direct[1,2] (as difined by LOOKBACK),
-    // and direct[3,4,5] (as difined by LOOKFORWARD)
-    const LOOKBACK = 2;
-    const LOOKFORWARD = 3;
-    var lastHitIndex = -1; 
-    // lastHitIndex is the index of the direct[] sentence that 'aligns' with last relayed[] sentence.
-    // 'Align' refers to the one with a similarity score highest in the selection or over the threshold.
-    // If there are multiple 'aligned' sentences, then choose the one with the largest index.
-    var lastHitScore = 0;
-    const HITSCORETHRESHOLD = 0.7;
-    for (var i = 0; i < relayedArticleSentences.length; i ++){
+      alignReq.articles = newArticles;
+
+      // Step 2: Translate one article into Chinese and split into sentences.
+      // Text Translate is based on tencentcloudService.
+      // Document: https://cloud.tencent.com/document/product/551/15619
+      // Pricing: 5 million character every month for free; 58 CNY per million character after the free quota.
+      // Translation history is stored in Neo4j database, which can be used for future requests.
+      for (var i = 0; i < alignReq.articles.length; i++ ){
+        if (alignReq.articles[i].lang == 'zh'){
+          continue;
+        } else {
+          alignReq.articles[i].translLang = 'zh';
+          alignReq.articles[i] = await this.articleTranslate(alignReq.articles[i]);
+          // console.log(alignReq.articles[i]);
+          break;
+        }        
+      }
+
+      // Step 3: Calculate the similarity between the sentences of the translation-relayed article and those of the direct-sent article.
+      // Text Translate is based on tencentcloudService.
+      // Document: https://cloud.tencent.com/document/product/271/35506
+      // Pricing 500,000 free calls every day; 27 CNY per 10,000 call after the free quota.
+      // Similarity-calculation history is stored in Neo4j database, which can be used for future requests.
+      var directArticleIndex: number
+      var relayedArticleIndex: number
+      var relationArray: Relation[] = []
+      for (var i = 0; i < alignReq.articles.length; i++ ){
+        if (alignReq.articles[i].lang == 'zh'){
+          directArticleIndex = i;
+          continue;
+        } else {
+          relayedArticleIndex = i;
+          break;
+        }
+      }
+      let relayedArticleSentences = alignReq.articles[relayedArticleIndex].translSentenceArray;
+      let directArticleSentences = alignReq.articles[directArticleIndex].sentenceArray;
+      let directArticleLength = directArticleSentences.length;
+      // Define constants based on experience.
+      // E.g. When relayed[2] is aligned with direct[2], 
+      // relayed[3] is to be compared with direct[1,2] (as difined by LOOKBACK),
+      // and direct[3,4,5] (as difined by LOOKFORWARD)
+      const LOOKBACK = 2;
+      const LOOKFORWARD = 3;
+      var lastHitIndex = -1; 
+      // lastHitIndex is the index of the direct[] sentence that 'aligns' with last relayed[] sentence.
+      // 'Align' refers to the one with a similarity score highest in the selection or over the threshold.
+      // If there are multiple 'aligned' sentences, then choose the one with the largest index.
       var lastHitScore = 0;
-      var selectionStartIndex = (lastHitIndex + 1 - LOOKBACK); 
-      if (selectionStartIndex < 0){selectionStartIndex = 0;}
-      var selectionEndIndex = lastHitIndex + 1 + LOOKFORWARD;
-      if (selectionEndIndex > directArticleLength){selectionEndIndex = directArticleLength;}
-      const similarityReq: TextSimilarityRequest = {
-        SrcText: relayedArticleSentences[i],
-        TargetText: directArticleSentences.slice(selectionStartIndex,selectionEndIndex)
-      };
-      const similarityRes = await this.textSimilarity(similarityReq);
+      const HITSCORETHRESHOLD = 0.7;
+      for (var i = 0; i < relayedArticleSentences.length; i ++){
+        var lastHitScore = 0;
+        var selectionStartIndex = (lastHitIndex + 1 - LOOKBACK); 
+        if (selectionStartIndex < 0){selectionStartIndex = 0;}
+        var selectionEndIndex = lastHitIndex + 1 + LOOKFORWARD;
+        if (selectionEndIndex > directArticleLength){selectionEndIndex = directArticleLength;}
+        const similarityReq: TextSimilarityRequest = {
+          SrcText: relayedArticleSentences[i],
+          TargetText: directArticleSentences.slice(selectionStartIndex,selectionEndIndex)
+        };
+        const similarityRes = await this.textSimilarity(similarityReq);
 
-      for (var j = 0; j < similarityRes.Similarity.length; j ++){
-        // Parse similarity analysis response
-        let sim = similarityRes.Similarity[j]          
-        const newRelation: Relation = {
-          nodes: [{
-            articleIndex: relayedArticleIndex,
-            sentenceIndex: i,
-            text: similarityReq.SrcText,
-            lang: alignReq.articles[relayedArticleIndex].lang
-          }, {
-            articleIndex: directArticleIndex,
-            sentenceIndex: selectionStartIndex + j,
-            text: sim.Text,
-            lang: 'zh'
-          }],
-          similarity: sim.Score,
-          method: 'tmt-relay',
-          hit: false,
-        }
-        relationArray.push(newRelation)
-        // Decide lastHitIndex
-        if(sim.Score > lastHitScore || sim.Score >= HITSCORETHRESHOLD){
-          lastHitScore = sim.Score;
-          lastHitIndex = selectionStartIndex + j;
+        for (var j = 0; j < similarityRes.Similarity.length; j ++){
+          // Parse similarity analysis response
+          let sim = similarityRes.Similarity[j]          
+          const newRelation: Relation = {
+            nodes: [{
+              articleIndex: relayedArticleIndex,
+              sentenceIndex: i,
+              text: similarityReq.SrcText,
+              lang: alignReq.articles[relayedArticleIndex].lang
+            }, {
+              articleIndex: directArticleIndex,
+              sentenceIndex: selectionStartIndex + j,
+              text: sim.Text,
+              lang: 'zh'
+            }],
+            similarity: sim.Score,
+            method: 'tmt-relay',
+            hit: false,
+          }
+          relationArray.push(newRelation)
+          // Decide lastHitIndex
+          if(sim.Score > lastHitScore || sim.Score >= HITSCORETHRESHOLD){
+            lastHitScore = sim.Score;
+            lastHitIndex = selectionStartIndex + j;
+          }
         }
       }
-    }
-    // Binarize align result
-    // Rule 1: similarity score >= HITSCORETHRESHOLD.
-    relationArray.forEach(relation => {
-      if(relation.similarity >= HITSCORETHRESHOLD){relation.hit = true}
-    })
-    // Rule 2: highest similarity score (in the row and in the column).
-    relationArray.forEach(relationA => {
-      const xA = relationA.nodes[0].sentenceIndex;
-      const yA = relationA.nodes[1].sentenceIndex;
-      const zA = relationA.similarity;
-      var hit = relationArray.every(relationB =>{
-        const xB = relationB.nodes[0].sentenceIndex;
-        const yB = relationB.nodes[1].sentenceIndex;
-        const zB = relationB.similarity;
-        if((xA == xB || yA == yB) && zA < zB){return false;}
-        else{return true;}
+      // Binarize align result
+      // Rule 1: similarity score >= HITSCORETHRESHOLD.
+      relationArray.forEach(relation => {
+        if(relation.similarity >= HITSCORETHRESHOLD){relation.hit = true}
       })
-      if(hit){relationA.hit = true;}
-    })
+      // Rule 2: highest similarity score (in the row and in the column).
+      relationArray.forEach(relationA => {
+        const xA = relationA.nodes[0].sentenceIndex;
+        const yA = relationA.nodes[1].sentenceIndex;
+        const zA = relationA.similarity;
+        var hit = relationArray.every(relationB =>{
+          const xB = relationB.nodes[0].sentenceIndex;
+          const yB = relationB.nodes[1].sentenceIndex;
+          const zB = relationB.similarity;
+          if((xA == xB || yA == yB) && zA < zB){return false;}
+          else{return true;}
+        })
+        if(hit){relationA.hit = true;}
+      })
 
-    alignReq.relations = relationArray
-    console.log(alignReq)
-    return alignReq
+      alignReq.relations = relationArray
+      console.log(alignReq)
+      return alignReq
+    }
+    catch(error){
+      throw new HttpException(`Unknown Error!`, HttpStatus.BAD_REQUEST);
+    }
   }
 
   // <-- Functions for alignArticles - STEP #1: sentence boundary detection -->
