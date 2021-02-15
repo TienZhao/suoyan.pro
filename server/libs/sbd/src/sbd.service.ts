@@ -50,6 +50,8 @@ export class SbdService {
         text = text.replace(/(\.{6})([^”’])/g, '$1\n$2'); //...... not followed by [”’]
         text = text.replace(/(\…{2})([^”’])/g, '$1\n$2'); //…… not followed by [”’] 
         text = text.replace(/([。！？\?][”’])([^，。！？\?])/g, '$1\n$2'); // [。！？][”’] not followed by [，。！？]
+        text = text.replace(/\s+\n/g, '\n'); // remove spaces before \n 
+        text = text.replace(/(\n)+/g, '\n'); // only keep one \n when having multiple \n
         text = text.trim();
         item.sentenceLineBreak = text;
         item.sentenceArray = text.split('\n');
