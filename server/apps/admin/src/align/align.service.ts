@@ -147,7 +147,7 @@ export class AlignService {
           }
           relationArray.push(newRelation)
           // Decide lastHitIndex
-          if(sim.Score > lastHitScore || sim.Score >= HITSCORETHRESHOLD){
+          if(sim.Score > lastHitScore){
             lastHitScore = sim.Score;
             lastHitIndex = selectionStartIndex + j;
           }
